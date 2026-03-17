@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Wanderlust</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=Raleway:wght@200;300;400;500;600&family=Cormorant:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+/* ====================================================
+   WANDERLUST — FULL SELF-CONTAINED PREMIUM DESIGN
+   ==================================================== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:       #07091A;
+  --bg2:      #0D1030;
+  --bg3:      #111428;
+  --glass:    rgba(255,255,255,0.05);
+  --glass2:   rgba(255,255,255,0.08);
+  --border:   rgba(255,255,255,0.09);
+  --gold:     #F0A500;
+  --gold2:    #FFD166;
+  --rose:     #FF6B9D;
+  --teal:     #06D6A0;
+  --blue:     #4CC9F0;
+  --text:     #EEF2FF;
+  --muted:    rgba(200,210,255,0.5);
+  --serif:    'Playfair Display', Georgia, serif;
+  --display:  'Cormorant', Georgia, serif;
+  --sans:     'Raleway', system-ui, sans-serif;
+  --ease:     cubic-bezier(0.16,1,0.3,1);
+}
+
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans);
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+a{text-decoration:none;color:inherit}
+img{display:block;max-width:100%}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
+
+/* ── LOADER ── */
+#loader{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--bg);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:2rem;
+  transition:opacity .8s var(--ease),visibility .8s;
+}
+#loader.gone{opacity:0;visibility:hidden;pointer-events:none}
+.ld-logo{
+  font-family:var(--serif);
+  font-size:clamp(2rem,5vw,3.5rem);
+  font-weight:400;
+  letter-spacing:.35em;
+  background:linear-gradient(135deg,var(--gold),var(--gold2),var(--rose));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  opacity:0;animation:fadeIn .8s .2s ease forwards;
+}
+.ld-track{width:200px;height:1px;background:rgba(255,255,255,.1);overflow:hidden}
+.ld-bar{height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--rose))}
+.ld-sub{
+  font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--muted);opacity:0;animation:fadeIn .7s .5s ease forwards;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.4rem clamp(1.5rem,5vw,4rem);
+  transition:all .45s var(--ease);
+}
+nav.scrolled{
+  background:rgba(7,9,26,.85);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+  padding:.9rem clamp(1.5rem,5vw,4rem);
+}
+.nav-brand{
+  font-family:var(--serif);font-size:1.25rem;font-weight:700;
+  letter-spacing:.12em;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.nav-links{
+  display:flex;align-items:center;gap:2.5rem;list-style:none;
+}
+.nav-links a{
+  font-size:.72rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--muted);transition:color .25s;position:relative;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;
+  background:var(--gold);transition:width .3s var(--ease);
+}
+.nav-links a:hover{color:var(--text)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{
+  padding:.55rem 1.4rem;
+  background:linear-gradient(135deg,var(--gold),#E8950A);
+  color:#07091A;font-size:.7rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  border-radius:2px;transition:transform .25s,box-shadow .25s;
+  border:none;cursor:pointer;
+}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(240,165,0,.35)}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
+.hamburger span{display:block;width:22px;height:1.5px;background:var(--text);transition:all .3s}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+/* Mobile menu */
+.mob-menu{
+  position:fixed;inset:0;z-index:800;
+  background:var(--bg2);
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2.5rem;
+  opacity:0;visibility:hidden;transition:all .4s var(--ease);
+}
+.mob-menu.open{opacity:1;visibility:visible}
+.mob-menu a{
+  font-family:var(--serif);font-size:clamp(2rem,6vw,3.5rem);font-weight:400;
+  color:var(--text);transition:color .2s;
+}
+.mob-menu a:hover{color:var(--gold)}
+
+/* ── HERO ── */
+.hero{
+  position:relative;min-height:100vh;
+  display:flex;align-items:center;overflow:hidden;
+}
+
+/* Layered gradient background */
+/* Hero photo background */
+.hero-bg{
+  position:absolute;inset:0;
+  background-image:url('https://picsum.photos/seed/travel-road/1800/900');
+  background-size:cover;background-position:center;background-repeat:no-repeat;
+  transform:scale(1.05);
+  animation:heroZoom 18s ease-in-out infinite alternate;
+}
+/* Dark gradient overlay ON TOP of photo */
+.hero-bg::after{
+  content:'';position:absolute;inset:0;
+  background:
+    linear-gradient(160deg,rgba(7,9,26,.82) 0%,rgba(14,16,53,.65) 50%,rgba(18,8,32,.78) 100%),
+    radial-gradient(ellipse 80% 60% at 20% 40%,rgba(100,60,200,.22) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 60%,rgba(240,165,0,.12) 0%,transparent 55%);
+}
+@keyframes heroZoom{
+  from{transform:scale(1.05)}
+  to{transform:scale(1.12)}
+}
+/* Subtle grid lines overlay */
+.hero-grid{
+  position:absolute;inset:0;z-index:1;
+  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:60px 60px;
+}
+/* Keep orb classes but make them lighter since photo is behind */
+.orb{position:absolute;border-radius:50%;filter:blur(90px);animation:orbFloat 12s ease-in-out infinite;z-index:1}
+.orb1{width:500px;height:500px;background:radial-gradient(circle,rgba(240,165,0,.1),transparent 70%);top:-10%;left:-8%;animation-delay:0s}
+.orb2{width:400px;height:400px;background:radial-gradient(circle,rgba(255,107,157,.07),transparent 70%);bottom:-5%;right:-5%;animation-delay:-4s}
+.orb3{width:300px;height:300px;background:radial-gradient(circle,rgba(76,201,240,.06),transparent 70%);top:40%;right:20%;animation-delay:-7s}
+
+.hero-inner{
+  position:relative;z-index:2;
+  padding:0 clamp(1.5rem,7vw,6rem);
+  max-width:1000px;
+}
+
+.hero-badge{
+  display:inline-flex;align-items:center;gap:.75rem;
+  padding:.45rem 1.1rem;
+  background:rgba(240,165,0,.1);
+  border:1px solid rgba(240,165,0,.25);
+  border-radius:50px;
+  margin-bottom:2rem;
+  opacity:0;animation:slideUp .8s .3s var(--ease) forwards;
+}
+.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
+.hero-badge span{font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:500}
+
+.hero-title{
+  font-family:var(--serif);
+  font-size:clamp(3.5rem,8.5vw,8rem);
+  font-weight:900;
+  line-height:.95;
+  letter-spacing:-.02em;
+  margin-bottom:1.5rem;
+}
+.hero-title .line1{
+  display:block;color:var(--text);
+  opacity:0;animation:slideUp .9s .5s var(--ease) forwards;
+}
+.hero-title .line2{
+  display:block;
+  background:linear-gradient(135deg,var(--gold) 0%,var(--gold2) 40%,var(--rose) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  font-style:italic;
+  opacity:0;animation:slideUp .9s .7s var(--ease) forwards;
+}
+.hero-title .line3{
+  display:block;color:var(--text);
+  opacity:0;animation:slideUp .9s .9s var(--ease) forwards;
+}
+
+.hero-sub{
+  font-size:clamp(.95rem,1.5vw,1.15rem);
+  color:var(--muted);font-weight:300;line-height:1.8;
+  max-width:480px;margin-bottom:2.8rem;
+  opacity:0;animation:slideUp .8s 1.1s var(--ease) forwards;
+}
+
+.hero-btns{
+  display:flex;align-items:center;flex-wrap:wrap;gap:1rem;
+  opacity:0;animation:slideUp .8s 1.3s var(--ease) forwards;
+}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:.6rem;
+  padding:.95rem 2.2rem;
+  background:linear-gradient(135deg,var(--gold),#E8950A);
+  color:#07091A;font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  border-radius:3px;border:none;cursor:pointer;position:relative;overflow:hidden;
+  transition:transform .3s,box-shadow .3s;
+}
+.btn-primary::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--gold2),var(--gold));
+  opacity:0;transition:opacity .3s;
+}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 15px 40px rgba(240,165,0,.4)}
+.btn-primary:hover::before{opacity:1}
+.btn-primary span,.btn-primary svg{position:relative;z-index:1}
+.btn-primary svg{transition:transform .3s}
+.btn-primary:hover svg{transform:translateX(4px)}
+
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:.6rem;
+  padding:.9rem 2rem;
+  border:1px solid rgba(255,255,255,.2);color:var(--text);
+  font-size:.78rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
+  border-radius:3px;cursor:pointer;background:var(--glass);
+  backdrop-filter:blur(10px);
+  transition:all .3s;
+}
+.btn-secondary:hover{border-color:var(--gold);color:var(--gold);background:rgba(240,165,0,.08)}
+
+/* Hero float cards */
+.hero-floats{
+  position:absolute;right:clamp(1rem,5vw,6rem);top:50%;
+  transform:translateY(-50%);z-index:2;
+  display:flex;flex-direction:column;gap:1rem;
+  opacity:0;animation:fadeIn 1s 1.8s ease forwards;
+}
+.float-card{
+  background:rgba(255,255,255,.06);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border:1px solid var(--border);
+  border-radius:12px;padding:1.1rem 1.4rem;
+  display:flex;align-items:center;gap:1rem;min-width:200px;
+}
+.float-icon{
+  width:38px;height:38px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;
+}
+.fi-gold{background:rgba(240,165,0,.15)}
+.fi-rose{background:rgba(255,107,157,.15)}
+.fi-teal{background:rgba(6,214,160,.15)}
+.float-text strong{
+  display:block;font-family:var(--serif);font-size:1.3rem;font-weight:700;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  line-height:1;
+}
+.float-text span{font-size:.65rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+
+/* Scroll indicator */
+.scroll-hint{
+  position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:.5rem;
+  opacity:0;animation:fadeIn 1s 2.2s ease forwards;
+}
+.scroll-mouse{
+  width:22px;height:36px;border:1.5px solid rgba(255,255,255,.25);
+  border-radius:11px;display:flex;justify-content:center;padding-top:6px;
+}
+.scroll-wheel{
+  width:3px;height:7px;background:var(--gold);border-radius:2px;
+  animation:scrollWheel 1.6s ease-in-out infinite;
+}
+.scroll-hint span{font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted)}
+
+/* ── MARQUEE ── */
+.marquee{
+  background:linear-gradient(135deg,rgba(240,165,0,.06),rgba(255,107,157,.04));
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:.85rem 0;overflow:hidden;
+}
+.marquee-track{
+  display:flex;gap:2rem;width:max-content;
+  animation:marqueeAnim 30s linear infinite;
+}
+.marquee-track span{
+  font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;
+  color:var(--muted);white-space:nowrap;
+}
+.marquee-track .sep{color:var(--gold);font-size:.5rem}
+.marquee:hover .marquee-track{animation-play-state:paused}
+
+/* ── SECTION STYLES ── */
+section{padding:clamp(4rem,8vw,7rem) clamp(1.5rem,5vw,4rem)}
+.section-label{
+  display:inline-flex;align-items:center;gap:.6rem;
+  font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;
+  color:var(--gold);font-weight:600;margin-bottom:1rem;
+}
+.section-label::before{
+  content:'';width:20px;height:1.5px;
+  background:linear-gradient(90deg,var(--gold),var(--gold2));
+  border-radius:1px;
+}
+.section-title{
+  font-family:var(--serif);
+  font-size:clamp(2rem,4.5vw,3.5rem);
+  font-weight:700;line-height:1.1;color:var(--text);
+  margin-bottom:1rem;
+}
+.section-title em{
+  font-style:italic;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.section-sub{
+  font-size:.92rem;color:var(--muted);line-height:1.8;font-weight:300;max-width:500px;
+}
+
+/* Reveal animation base */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ── DESTINATIONS ── */
+.destinations{background:var(--bg2)}
+.dest-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:1.5rem;margin-top:3rem;
+}
+.dest-card{
+  position:relative;border-radius:16px;overflow:hidden;
+  height:380px;cursor:pointer;
+  border:1px solid var(--border);
+  transition:transform .5s var(--ease),box-shadow .5s;
+  group:true;
+}
+.dest-card:hover{transform:translateY(-8px) scale(1.01);box-shadow:0 30px 60px rgba(0,0,0,.5)}
+.dest-card-bg{
+  position:absolute;inset:0;transition:transform .6s var(--ease);
+}
+.dest-card:hover .dest-card-bg{transform:scale(1.07)}
+.dest-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.85) 0%,rgba(0,0,0,.2) 50%,transparent 100%);
+}
+.dest-content{
+  position:absolute;inset:0;padding:1.75rem;
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+.dest-tag{
+  align-self:flex-start;
+  padding:.3rem .85rem;
+  background:rgba(255,255,255,.12);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:50px;
+  font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text);
+  font-weight:500;
+}
+.dest-bottom{}
+.dest-flag{font-size:2.2rem;margin-bottom:.6rem;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5))}
+.dest-name{
+  font-family:var(--serif);font-size:1.65rem;font-weight:700;
+  color:#fff;line-height:1.1;margin-bottom:.4rem;
+}
+.dest-desc{font-size:.8rem;color:rgba(255,255,255,.65);line-height:1.6;margin-bottom:1rem}
+.dest-link{
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gold);transition:gap .3s;
+}
+.dest-card:hover .dest-link{gap:.7rem}
+.dest-num{
+  position:absolute;top:1.5rem;right:1.75rem;
+  font-family:var(--serif);font-size:3rem;font-weight:900;
+  color:rgba(255,255,255,.08);line-height:1;
+}
+
+/* Destination card gradients */
+/* Destination card photo backgrounds — real Unsplash travel photos */
+.d1{background-image:url('https://picsum.photos/seed/kyoto-temple/600/400');background-size:cover;background-position:center}
+.d2{background-image:url('https://picsum.photos/seed/desert-morocco/600/400');background-size:cover;background-position:center}
+.d3{background-image:url('https://picsum.photos/seed/santorini-greece/600/400');background-size:cover;background-position:center}
+.d4{background-image:url('https://picsum.photos/seed/rainforest-jungle/600/400');background-size:cover;background-position:center}
+.d5{background-image:url('https://picsum.photos/seed/rajasthan-palace/600/400');background-size:cover;background-position:center}
+.d6{background-image:url('https://picsum.photos/seed/newzealand-fjord/600/400');background-size:cover;background-position:center}
+.d7{background-image:url('https://picsum.photos/seed/lisbon-city/600/400');background-size:cover;background-position:center}
+.d8{background-image:url('https://picsum.photos/seed/iceland-aurora/600/400');background-size:cover;background-position:center}
+/* ── JOURNAL ── */
+.journal{background:var(--bg3)}
+.journal-layout{
+  display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem;
+}
+.journal-featured{
+  grid-row:span 2;
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:20px;overflow:hidden;
+  transition:transform .4s var(--ease),box-shadow .4s;cursor:pointer;
+  position:relative;
+}
+.journal-featured:hover{transform:translateY(-6px);box-shadow:0 25px 60px rgba(0,0,0,.4)}
+.jf-top{
+  height:260px;
+  background-image:url('https://picsum.photos/seed/tokyo-night/800/500');
+  background-size:cover;background-position:center;
+  display:flex;align-items:flex-end;padding:1.75rem;position:relative;overflow:hidden;
+}
+.jf-top::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(7,9,26,.85) 0%,rgba(7,9,26,.2) 60%,transparent 100%);
+}
+.jf-top-decor{display:none}
+.jf-top-num{
+  position:absolute;top:1.5rem;right:1.75rem;
+  font-family:var(--serif);font-size:4rem;font-weight:900;
+  color:rgba(255,255,255,.18);line-height:1;z-index:1;
+}
+.jf-emoji{font-size:2.8rem;position:relative;z-index:1}
+.jf-body{padding:1.75rem}
+.jf-meta{display:flex;align-items:center;gap:.75rem;margin-bottom:.85rem}
+.jf-date{font-size:.65rem;color:var(--muted);letter-spacing:.06em}
+.jf-chip{
+  padding:.25rem .7rem;border-radius:50px;
+  background:linear-gradient(135deg,rgba(240,165,0,.15),rgba(255,107,157,.1));
+  border:1px solid rgba(240,165,0,.2);
+  font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-weight:600;
+}
+.jf-body h3{
+  font-family:var(--serif);font-size:1.35rem;font-weight:700;
+  color:var(--text);line-height:1.3;margin-bottom:.75rem;
+}
+.jf-body p{font-size:.85rem;color:var(--muted);line-height:1.75;margin-bottom:1.2rem;font-weight:300}
+.read-link{
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gold);
+}
+.read-link svg{transition:transform .3s}
+.journal-featured:hover .read-link svg{transform:translateX(5px)}
+
+.journal-card{
+  background:var(--glass);border:1px solid var(--border);border-radius:16px;
+  cursor:pointer;overflow:hidden;
+  transition:transform .4s var(--ease),box-shadow .4s,background .3s;
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+.journal-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 20px 50px rgba(0,0,0,.35);
+  background:var(--glass2);
+}
+.jc-photo{
+  height:130px;background-size:cover;background-position:center;
+  position:relative;
+}
+.jc-photo::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to bottom,transparent 40%,rgba(7,9,26,.8) 100%);
+}
+.jc-body{padding:1.25rem 1.5rem 1.5rem;flex:1;display:flex;flex-direction:column;justify-content:space-between}
+.jc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.75rem}
+.jc-emoji{
+  width:44px;height:44px;border-radius:12px;
+  background:rgba(255,255,255,.05);
+  display:flex;align-items:center;justify-content:center;font-size:1.4rem;
+}
+.jc-num{
+  font-family:var(--serif);font-size:2rem;font-weight:900;
+  color:rgba(255,255,255,.07);line-height:1;
+}
+.journal-card h3{
+  font-family:var(--serif);font-size:1.05rem;font-weight:700;
+  color:var(--text);line-height:1.35;margin-bottom:.5rem;
+}
+.journal-card p{font-size:.8rem;color:var(--muted);line-height:1.65;font-weight:300}
+.jc-footer{display:flex;justify-content:space-between;align-items:center;margin-top:1.1rem}
+.jc-meta-info{display:flex;flex-direction:column;gap:.15rem}
+.jc-date{font-size:.62rem;color:var(--muted)}
+.jc-tag{
+  font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);
+}
+.jc-arrow{
+  width:32px;height:32px;border-radius:8px;
+  background:rgba(240,165,0,.1);border:1px solid rgba(240,165,0,.2);
+  display:flex;align-items:center;justify-content:center;color:var(--gold);
+  transition:all .25s;
+}
+.journal-card:hover .jc-arrow{background:var(--gold);color:#07091A}
+
+/* ── STATS ── */
+.stats{background:var(--bg)}
+.stats-inner{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1px;background:var(--border);
+  border:1px solid var(--border);border-radius:16px;overflow:hidden;
+  max-width:1100px;margin:0 auto;
+}
+.stat-box{
+  background:var(--bg);padding:3rem 2rem;text-align:center;
+  position:relative;overflow:hidden;
+  transition:background .3s;
+}
+.stat-box::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at center,var(--glow,rgba(240,165,0,.05)) 0%,transparent 70%);
+  opacity:0;transition:opacity .4s;
+}
+.stat-box:hover::before{opacity:1}
+.stat-box:hover{background:rgba(240,165,0,.03)}
+.stat-num{
+  display:block;
+  font-family:var(--serif);font-size:clamp(2.5rem,5vw,4.5rem);font-weight:900;
+  line-height:1;margin-bottom:.5rem;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.stat-label{
+  font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);font-weight:500;display:block;margin-bottom:.25rem;
+}
+.stat-detail{font-size:.72rem;color:rgba(200,210,255,.3);line-height:1.5}
+
+/* ── QUOTE ── */
+.quote-section{
+  background:linear-gradient(160deg,#0E0525 0%,#1A0842 50%,#0E0525 100%);
+  text-align:center;padding:clamp(5rem,10vw,9rem) clamp(1.5rem,5vw,4rem);
+  position:relative;overflow:hidden;
+}
+.quote-bg-orb{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(240,165,0,.08),transparent 60%);
+  pointer-events:none;
+}
+.quote-icon{
+  font-size:5rem;line-height:1;margin-bottom:1rem;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+blockquote{
+  font-family:var(--display);
+  font-size:clamp(1.8rem,4vw,3.2rem);
+  font-weight:300;font-style:italic;
+  color:var(--text);line-height:1.35;
+  max-width:700px;margin:0 auto 1.5rem;position:relative;z-index:1;
+}
+cite{
+  font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold);font-style:normal;font-weight:600;
+}
+
+/* ABOUT */
+.about-section{
+  background:var(--bg3);
+  padding:clamp(4rem,8vw,7rem) clamp(1.5rem,5vw,4rem);
+  border-top:1px solid var(--border);
+}
+.about-grid{
+  display:grid;grid-template-columns:1fr 1.4fr;
+  gap:4rem;max-width:1100px;margin:0 auto;align-items:start;
+}
+.about-body{
+  font-size:.92rem;color:var(--muted);line-height:1.85;font-weight:300;
+  margin-bottom:1.1rem;
+}
+.about-tags{
+  display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.5rem;
+}
+.about-tag{
+  padding:.35rem .9rem;
+  border:1px solid rgba(240,165,0,.25);
+  border-radius:50px;
+  font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gold);font-weight:500;
+  background:rgba(240,165,0,.06);
+}
+@media(max-width:768px){
+  .about-grid{grid-template-columns:1fr}
+}
+
+/* ── CONTACT ── */
+.contact{background:var(--bg2)}
+.contact-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:5rem;
+  align-items:start;max-width:1100px;margin:0 auto;
+}
+.contact-left{}
+.contact-email{
+  display:inline-flex;align-items:center;gap:.6rem;
+  margin-top:1.5rem;
+  font-size:.88rem;color:var(--gold);
+  border-bottom:1px solid rgba(240,165,0,.25);padding-bottom:4px;
+  transition:border-color .25s;
+}
+.contact-email:hover{border-color:var(--gold)}
+.contact-socials{display:flex;gap:1rem;margin-top:1.5rem}
+.social-btn{
+  width:40px;height:40px;border-radius:10px;
+  background:var(--glass);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;color:var(--muted);
+  transition:all .25s;cursor:pointer;
+}
+.social-btn:hover{background:rgba(240,165,0,.1);border-color:rgba(240,165,0,.3);color:var(--gold)}
+
+.contact-form{display:flex;flex-direction:column;gap:1.25rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{display:flex;flex-direction:column;gap:.45rem}
+.form-group label{
+  font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);font-weight:600;
+}
+.form-group input,.form-group textarea,.form-group select{
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--border);
+  border-radius:8px;color:var(--text);
+  font-family:var(--sans);font-size:.88rem;font-weight:300;
+  padding:.8rem 1rem;outline:none;width:100%;
+  transition:border-color .25s,background .25s;
+}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{
+  border-color:rgba(240,165,0,.45);background:rgba(255,255,255,.06);
+}
+.form-group input::placeholder,.form-group textarea::placeholder{color:rgba(200,210,255,.25)}
+.form-group textarea{resize:vertical;min-height:120px}
+.form-group select option{background:var(--bg2)}
+.submit-btn{
+  width:100%;padding:1rem;
+  background:linear-gradient(135deg,var(--gold),#E8950A);
+  color:#07091A;font-family:var(--sans);font-size:.8rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;border:none;border-radius:8px;cursor:pointer;
+  position:relative;overflow:hidden;transition:transform .3s,box-shadow .3s;
+}
+.submit-btn::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--gold2),var(--gold));
+  opacity:0;transition:opacity .3s;
+}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 12px 35px rgba(240,165,0,.4)}
+.submit-btn:hover::before{opacity:1}
+.submit-btn span{position:relative;z-index:1}
+.form-success{
+  display:none;text-align:center;padding:1rem;
+  background:rgba(6,214,160,.1);border:1px solid rgba(6,214,160,.25);border-radius:8px;
+  color:var(--teal);font-size:.82rem;
+}
+.form-success.show{display:block}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--bg);
+  border-top:1px solid var(--border);
+  padding:clamp(3rem,5vw,4rem) clamp(1.5rem,5vw,4rem);
+}
+.footer-top{
+  display:grid;grid-template-columns:1fr 2fr 1fr;gap:3rem;
+  padding-bottom:3rem;border-bottom:1px solid var(--border);margin-bottom:2.5rem;
+}
+.footer-brand{}
+.footer-logo{
+  font-family:var(--serif);font-size:1.5rem;font-weight:700;letter-spacing:.1em;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:.75rem;display:inline-block;
+}
+.footer-tagline{font-size:.8rem;color:var(--muted);line-height:1.7;font-weight:300;max-width:220px}
+.footer-links-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem}
+.footer-col h4{
+  font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1rem;font-weight:600;
+}
+.footer-col a{
+  display:block;font-size:.82rem;color:var(--muted);margin-bottom:.6rem;
+  transition:color .2s;font-weight:300;
+}
+.footer-col a:hover{color:var(--text)}
+.footer-newsletter{}
+.footer-newsletter h4{
+  font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1rem;font-weight:600;
+}
+.footer-newsletter p{font-size:.8rem;color:var(--muted);margin-bottom:1rem;line-height:1.6;font-weight:300}
+.nl-form{display:flex;gap:.5rem}
+.nl-form input{
+  flex:1;background:rgba(255,255,255,.04);border:1px solid var(--border);
+  border-radius:6px;color:var(--text);font-family:var(--sans);
+  font-size:.8rem;padding:.65rem .9rem;outline:none;
+  transition:border-color .25s;
+}
+.nl-form input:focus{border-color:rgba(240,165,0,.35)}
+.nl-form input::placeholder{color:rgba(200,210,255,.25)}
+.nl-form button{
+  padding:.65rem 1.1rem;
+  background:var(--gold);color:#07091A;font-size:.72rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;border:none;border-radius:6px;cursor:pointer;
+  white-space:nowrap;transition:background .25s;
+}
+.nl-form button:hover{background:var(--gold2)}
+
+.footer-bottom{
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;
+}
+.footer-bottom p{font-size:.72rem;color:rgba(200,210,255,.3)}
+.footer-bottom-links{display:flex;gap:1.5rem}
+.footer-bottom-links a{font-size:.68rem;color:rgba(200,210,255,.3);transition:color .2s}
+.footer-bottom-links a:hover{color:var(--gold)}
+.footer-badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.3rem .85rem;border:1px solid var(--border);border-radius:50px;
+  font-size:.6rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;
+}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);animation:pulse 2s infinite}
+
+/* ── KEYFRAMES ── */
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes orbFloat{
+  0%,100%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(2%,3%) scale(1.04)}
+  66%{transform:translate(-2%,1%) scale(.97)}
+}
+@keyframes pulse{
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:.6;transform:scale(.85)}
+}
+@keyframes scrollWheel{
+  0%{opacity:1;transform:translateY(0)}
+  100%{opacity:0;transform:translateY(14px)}
+}
+@keyframes marqueeAnim{
+  from{transform:translateX(0)}
+  to{transform:translateX(-50%)}
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .hero-floats{display:none}
+  .journal-layout{grid-template-columns:1fr}
+  .journal-featured{grid-row:span 1}
+  .stats-inner{grid-template-columns:1fr 1fr}
+  .footer-top{grid-template-columns:1fr 1fr;grid-template-rows:auto auto}
+  .footer-newsletter{grid-column:1/-1}
+  .contact-grid{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  .nav-links{display:none}
+  .nav-cta{display:none}
+  .hamburger{display:flex}
+  .dest-grid{grid-template-columns:1fr}
+  .stats-inner{grid-template-columns:1fr 1fr}
+  .footer-top{grid-template-columns:1fr}
+  .footer-links-grid{grid-template-columns:1fr 1fr}
+  .hero-title{font-size:clamp(2.5rem,10vw,5rem)}
+  .form-row{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+  .stats-inner{grid-template-columns:1fr}
+  .footer-links-grid{grid-template-columns:1fr}
+  .hero-btns{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="ld-logo">WANDERLUST</div>
+  <div class="ld-track"><div class="ld-bar" id="loaderBar"></div></div>
+  <div class="ld-sub">A Travel Journal · Est. 2019</div>
+</div>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="index.html" class="nav-brand">WANDERLUST</a>
+  <ul class="nav-links">
+    <li><a href="#destinations">Destinations</a></li>
+    <li><a href="#journal">Journal</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="destinations.html" class="nav-cta">Explore Now</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mob-menu" id="mobMenu">
+  <a href="#destinations" onclick="closeMob()">Destinations</a>
+  <a href="#journal" onclick="closeMob()">Journal</a>
+  <a href="#about" onclick="closeMob()">About</a>
+  <a href="#contact" onclick="closeMob()">Contact</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      <span>47 Countries · 6 Continents · 312 Stories</span>
+    </div>
+
+    <h1 class="hero-title">
+      <span class="line1">The World</span>
+      <span class="line2">Awaits</span>
+      <span class="line3">You.</span>
+    </h1>
+
+    <p class="hero-sub">
+      Stories, places, and moments collected across six continents.
+      Authentic travel writing for those who wander with intention.
+    </p>
+
+    <div class="hero-btns">
+      <a href="#destinations" class="btn-primary">
+        <span>Explore Destinations</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="#journal" class="btn-secondary">
+        <span>Read the Journal</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-floats">
+    <div class="float-card">
+      <div class="float-icon fi-gold">🌍</div>
+      <div class="float-text">
+        <strong>47</strong>
+        <span>Countries Visited</span>
+      </div>
+    </div>
+    <div class="float-card">
+      <div class="float-icon fi-rose">✍️</div>
+      <div class="float-text">
+        <strong>312</strong>
+        <span>Journal Entries</span>
+      </div>
+    </div>
+    <div class="float-card">
+      <div class="float-icon fi-teal">✈️</div>
+      <div class="float-text">
+        <strong>84K</strong>
+        <span>Miles Travelled</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
+    <span>Scroll Down</span>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee">
+  <div class="marquee-track">
+    <span>Japan</span><span class="sep">✦</span>
+    <span>Morocco</span><span class="sep">✦</span>
+    <span>Greece</span><span class="sep">✦</span>
+    <span>Costa Rica</span><span class="sep">✦</span>
+    <span>Rajasthan</span><span class="sep">✦</span>
+    <span>New Zealand</span><span class="sep">✦</span>
+    <span>Portugal</span><span class="sep">✦</span>
+    <span>Iceland</span><span class="sep">✦</span>
+    <span>Thailand</span><span class="sep">✦</span>
+    <span>Patagonia</span><span class="sep">✦</span>
+    <span>Tuscany</span><span class="sep">✦</span>
+    <span>Goa</span><span class="sep">✦</span>
+    <!-- repeat for seamless loop -->
+    <span>Japan</span><span class="sep">✦</span>
+    <span>Morocco</span><span class="sep">✦</span>
+    <span>Greece</span><span class="sep">✦</span>
+    <span>Costa Rica</span><span class="sep">✦</span>
+    <span>Rajasthan</span><span class="sep">✦</span>
+    <span>New Zealand</span><span class="sep">✦</span>
+    <span>Portugal</span><span class="sep">✦</span>
+    <span>Iceland</span><span class="sep">✦</span>
+    <span>Thailand</span><span class="sep">✦</span>
+    <span>Patagonia</span><span class="sep">✦</span>
+    <span>Tuscany</span><span class="sep">✦</span>
+    <span>Goa</span><span class="sep">✦</span>
+  </div>
+</div>
+
+<!-- DESTINATIONS -->
+<section class="destinations reveal" id="destinations">
+  <div class="section-label">Where we've been</div>
+  <h2 class="section-title">Featured <em>Destinations</em></h2>
+  <p class="section-sub">From ancient temples to wild coastlines — every place tells a story worth reading.</p>
+
+  <div class="dest-grid">
+
+    <div class="dest-card reveal">
+      <div class="dest-card-bg d1"></div>
+      <div class="dest-overlay"></div>
+      <div class="dest-content">
+        <span class="dest-tag">Asia · East</span>
+        <div class="dest-bottom">
+          <div class="dest-flag">🇯🇵</div>
+          <div class="dest-name">Kyoto, Japan</div>
+          <div class="dest-desc">Cherry blossoms, ancient temples, and the art of stillness.</div>
+          <a href="destinations.html" class="dest-link">Explore <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+        </div>
+      </div>
+      <div class="dest-num">01</div>
+    </div>
+
+    <div class="dest-card reveal">
+      <div class="dest-card-bg d2"></div>
+      <div class="dest-overlay"></div>
+      <div class="dest-content">
+        <span class="dest-tag">Africa · North</span>
+        <div class="dest-bottom">
+          <div class="dest-flag">🇲🇦</div>
+          <div class="dest-name">Marrakech, Morocco</div>
+          <div class="dest-desc">Rose-pink medinas, labyrinthine souks, and perfect mint tea.</div>
+          <a href="destinations.html" class="dest-link">Explore <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+        </div>
+      </div>
+      <div class="dest-num">02</div>
+    </div>
+
+    <div class="dest-card reveal">
+      <div class="dest-card-bg d3"></div>
+      <div class="dest-overlay"></div>
+      <div class="dest-content">
+        <span class="dest-tag">Europe · South</span>
+        <div class="dest-bottom">
+          <div class="dest-flag">🇬🇷</div>
+          <div class="dest-name">Santorini, Greece</div>
+          <div class="dest-desc">Whitewashed infinity and sunsets that silence every crowd.</div>
+          <a href="destinations.html" class="dest-link">Explore <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+        </div>
+      </div>
+      <div class="dest-num">03</div>
+    </div>
+
+    <div class="dest-card reveal">
+      <div class="dest-card-bg d4"></div>
+      <div class="dest-overlay"></div>
+      <div class="dest-content">
+        <span class="dest-tag">Americas · Central</span>
+        <div class="dest-bottom">
+          <div class="dest-flag">🇨🇷</div>
+          <div class="dest-name">Costa Rica</div>
+          <div class="dest-desc">Rainforests, volcanoes, and Pura Vida as a philosophy of life.</div>
+          <a href="destinations.html" class="dest-link">Explore <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+        </div>
+      </div>
+      <div class="dest-num">04</div>
+    </div>
+
+    <div class="dest-card reveal">
+      <div class="dest-card-bg d5"></div>
+      <div class="dest-overlay"></div>
+      <div class="dest-content">
+        <span class="dest-tag">Asia · South</span>
+        <div class="dest-bottom">
+          <div class="dest-flag">🇮🇳</div>
+          <div class="dest-name">Rajasthan, India</div>
+          <div class="dest-desc">Palace hotels, desert dunes at dusk, and colors unlike anywhere else.</div>
+          <a href="destinations.html" class="dest-link">Explore <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+        </div>
+      </div>
+      <div class="dest-num">05</div>
+    </div>
+
+    <div class="dest-card reveal">
+      <div class="dest-card-bg d6"></div>
+      <div class="dest-overlay"></div>
+      <div class="dest-content">
+        <span class="dest-tag">Oceania</span>
+        <div class="dest-bottom">
+          <div class="dest-flag">🇳🇿</div>
+          <div class="dest-name">New Zealand</div>
+          <div class="dest-desc">Fjords, geothermal fields, and landscapes from Middle Earth.</div>
+          <a href="destinations.html" class="dest-link">Explore <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+        </div>
+      </div>
+      <div class="dest-num">06</div>
+    </div>
+
+    <div class="dest-card reveal">
+      <div class="dest-card-bg d7"></div>
+      <div class="dest-overlay"></div>
+      <div class="dest-content">
+        <span class="dest-tag">Europe · West</span>
+        <div class="dest-bottom">
+          <div class="dest-flag">🇵🇹</div>
+          <div class="dest-name">Lisbon, Portugal</div>
+          <div class="dest-desc">Cobblestone hills, Fado music, and the world's finest pastéis.</div>
+          <a href="destinations.html" class="dest-link">Explore <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+        </div>
+      </div>
+      <div class="dest-num">07</div>
+    </div>
+
+    <div class="dest-card reveal">
+      <div class="dest-card-bg d8"></div>
+      <div class="dest-overlay"></div>
+      <div class="dest-content">
+        <span class="dest-tag">Europe · North</span>
+        <div class="dest-bottom">
+          <div class="dest-flag">🇮🇸</div>
+          <div class="dest-name">Iceland</div>
+          <div class="dest-desc">Northern lights, black sand beaches, and geysers on schedule.</div>
+          <a href="destinations.html" class="dest-link">Explore <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+        </div>
+      </div>
+      <div class="dest-num">08</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- JOURNAL -->
+<section class="journal reveal" id="journal">
+  <div class="section-label">Field notes from the road</div>
+  <h2 class="section-title">From the <em>Journal</em></h2>
+
+  <div class="journal-layout">
+    <div class="journal-featured reveal">
+      <div class="jf-top">
+        <div class="jf-top-decor"></div>
+        <div class="jf-top-num">01</div>
+        <div class="jf-emoji">🍜</div>
+      </div>
+      <div class="jf-body">
+        <div class="jf-meta">
+          <span class="jf-date">March 2025</span>
+          <span class="jf-chip">Asia</span>
+        </div>
+        <h3>48 Hours in Tokyo: A City That Never Sleeps, But Always Surprises</h3>
+        <p>From a 3am ramen counter in Shinjuku to a 6am tuna auction at Toyosu, Tokyo rewards those who stay awake for it. The city shifts personalities hourly — quiet shrines at dawn give way to neon-saturated evenings.</p>
+        <a href="journal.html" class="read-link">
+          Read Full Entry
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="journal-card reveal">
+      <div class="jc-photo" style="background-image:url('https://picsum.photos/seed/sahara-desert/600/300')"></div>
+      <div class="jc-body">
+        <div>
+          <div class="jc-top">
+            <div class="jc-emoji">🏜️</div>
+            <span class="jc-num">02</span>
+          </div>
+          <h3>Crossing the Sahara: What Silence Sounds Like When Absolute</h3>
+          <p>No wifi, no cities, no noise — just stars bright enough to read by and sand shifting underfoot.</p>
+        </div>
+        <div class="jc-footer">
+          <div class="jc-meta-info">
+            <span class="jc-date">January 2025</span>
+            <span class="jc-tag">Africa</span>
+          </div>
+          <a href="journal.html" class="jc-arrow">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="journal-card reveal">
+      <div class="jc-photo" style="background-image:url('https://picsum.photos/seed/tuscany-hills/600/300')"></div>
+      <div class="jc-body">
+        <div>
+          <div class="jc-top">
+            <div class="jc-emoji">🍷</div>
+            <span class="jc-num">03</span>
+          </div>
+          <h3>The Quiet Villages of Tuscany Nobody Puts on a Map</h3>
+          <p>Not Florence. Not Siena. The hill towns you reach by asking a stranger, and are glad you did.</p>
+        </div>
+        <div class="jc-footer">
+          <div class="jc-meta-info">
+            <span class="jc-date">November 2024</span>
+            <span class="jc-tag">Europe</span>
+          </div>
+          <a href="journal.html" class="jc-arrow">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="journal-card reveal">
+      <div class="jc-photo" style="background-image:url('https://picsum.photos/seed/patagonia-mountains/600/300')"></div>
+      <div class="jc-body">
+        <div>
+          <div class="jc-top">
+            <div class="jc-emoji">🏔️</div>
+            <span class="jc-num">04</span>
+          </div>
+          <h3>Patagonia Without a Plan: Lost at the End of the World</h3>
+          <p>The glaciers are receding, buses run when they feel like it, and the wind resets everything.</p>
+        </div>
+        <div class="jc-footer">
+          <div class="jc-meta-info">
+            <span class="jc-date">September 2024</span>
+            <span class="jc-tag">Americas</span>
+          </div>
+          <a href="journal.html" class="jc-arrow">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="stats-inner">
+    <div class="stat-box reveal" style="--glow:rgba(240,165,0,.08)">
+      <span class="stat-num" data-target="47">0</span>
+      <span class="stat-label">Countries</span>
+      <div class="stat-detail">Across all major regions of the world</div>
+    </div>
+    <div class="stat-box reveal" style="--glow:rgba(255,107,157,.06)">
+      <span class="stat-num" data-target="6">0</span>
+      <span class="stat-label">Continents</span>
+      <div class="stat-detail">Only Antarctica remains on the list</div>
+    </div>
+    <div class="stat-box reveal" style="--glow:rgba(76,201,240,.06)">
+      <span class="stat-num" data-target="312">0</span>
+      <span class="stat-label">Entries</span>
+      <div class="stat-detail">Journal entries and counting since 2019</div>
+    </div>
+    <div class="stat-box reveal" style="--glow:rgba(6,214,160,.06)">
+      <span class="stat-num" data-target="84">0</span>
+      <span class="stat-label">K Miles</span>
+      <div class="stat-detail">Roughly 3.4 laps around the earth</div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section class="quote-section reveal">
+  <div class="quote-bg-orb"></div>
+  <div class="quote-icon">"</div>
+  <blockquote>Not all those who wander<br>are lost.</blockquote>
+  <cite>— J.R.R. Tolkien, The Fellowship of the Ring</cite>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section reveal" id="about">
+  <div class="about-grid">
+    <div class="about-left">
+      <div class="section-label">About this project</div>
+      <h2 class="section-title">Built for <em>AWS.</em><br>Designed for the road.</h2>
+    </div>
+    <div class="about-right">
+      <p class="about-body">This website was built as part of the AWS Cloud Fundamentals course offered through Accenture's partnership with Udacity. The project covers deploying a static website on Amazon S3, securing it with IAM bucket policies, and distributing it globally using Amazon CloudFront.</p>
+      <p class="about-body">The site itself is a travel journal concept — a place to document destinations, write up experiences from the road, and share stories from different parts of the world. All pages are static HTML, CSS and JavaScript with no backend or server-side code, making it a perfect fit for S3 hosting.</p>
+      <div class="about-tags">
+        <span class="about-tag">Amazon S3</span>
+        <span class="about-tag">CloudFront CDN</span>
+        <span class="about-tag">IAM Policies</span>
+        <span class="about-tag">Static Hosting</span>
+        <span class="about-tag">HTML / CSS / JS</span>
+        <span class="about-tag">Udacity x Accenture</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact reveal" id="contact">
+  <div class="contact-grid">
+    <div class="contact-left">
+      <div class="section-label">Get in touch</div>
+      <h2 class="section-title">Have a Story<br>to <em>Share?</em></h2>
+      <p class="section-sub">Whether you're a fellow traveler or looking to collaborate — we'd love to hear from you.</p>
+      <a class="contact-email" href="/cdn-cgi/l/email-protection#8ee6ebe2e2e1cef9efe0eaebfce2fbfdfaa0fafceff8ebe2">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4h12v9H2zM2 4l6 5 6-5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="__cf_email__" data-cfemail="bcd4d9d0d0d3fccbddd2d8d9ced0c9cfc892c8ceddcad9d0">[email&#160;protected]</span>
+      </a>
+      <div class="contact-socials">
+        <button class="social-btn" title="Instagram">📸</button>
+        <button class="social-btn" title="Twitter">🐦</button>
+        <button class="social-btn" title="YouTube">▶️</button>
+        <button class="social-btn" title="Pinterest">📌</button>
+      </div>
+    </div>
+    <div class="contact-right">
+      <form class="contact-form" onsubmit="handleForm(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" placeholder="Your name" required/>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" placeholder="your@email.com" required/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Subject</label>
+          <select>
+            <option value="">Select a topic…</option>
+            <option>Collaboration</option>
+            <option>Travel Tips</option>
+            <option>Share My Story</option>
+            <option>General Inquiry</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea placeholder="Tell us your story or question…" required></textarea>
+        </div>
+        <button type="submit" class="submit-btn"><span>Send Message ✦</span></button>
+        <div class="form-success" id="formSuccess">✓ Message received! We'll be in touch within 48 hours.</div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo">WANDERLUST</div>
+      <p class="footer-tagline">Authentic travel writing for those who wander with intention. Since 2019.</p>
+    </div>
+    <div class="footer-links-grid">
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="#destinations">Destinations</a>
+        <a href="journal.html">Journal</a>
+        <a href="destinations.html">All Places</a>
+      </div>
+      <div class="footer-col">
+        <h4>Regions</h4>
+        <a href="destinations.html">Asia Pacific</a>
+        <a href="destinations.html">Europe</a>
+        <a href="destinations.html">Americas</a>
+        <a href="destinations.html">Africa</a>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <a href="#contact">Contact Us</a>
+        <a href="#">Instagram</a>
+        <a href="#">YouTube</a>
+      </div>
+    </div>
+    <div class="footer-newsletter">
+      <h4>Newsletter</h4>
+      <p>Get new stories delivered to your inbox every week.</p>
+      <div class="nl-form">
+        <input type="email" placeholder="your@email.com"/>
+        <button type="button">Subscribe</button>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Wanderlust Travel Journal. Hosted on AWS S3 + CloudFront.</p>
+    <div class="footer-badge"><span class="badge-dot"></span> Deployed on AWS</div>
+    <div class="footer-bottom-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Sitemap</a>
+    </div>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+(function(){
+  // LOADER — bulletproof: fires on page load OR after 2s max, whichever comes first
+  const loader = document.getElementById('loader');
+  const bar = document.getElementById('loaderBar');
+
+  function dismissLoader() {
+    bar.style.width = '100%';
+    setTimeout(() => loader.classList.add('gone'), 350);
+  }
+
+  // Animate bar visually while loading
+  let prog = 0;
+  const iv = setInterval(() => {
+    prog = Math.min(prog + 12, 90); // goes to 90% max, final 10% on load
+    bar.style.width = prog + '%';
+    if (prog >= 90) clearInterval(iv);
+  }, 80);
+
+  // Dismiss as soon as page is ready
+  if (document.readyState === 'complete') {
+    dismissLoader();
+  } else {
+    window.addEventListener('load', dismissLoader);
+    setTimeout(dismissLoader, 2000); // hard fallback — never stuck
+  }
+
+  // NAV
+  const nav = document.getElementById('mainNav');
+  let lastY = 0;
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    nav.classList.toggle('scrolled', y > 60);
+    lastY = y;
+  }, {passive:true});
+
+  // HAMBURGER
+  const hb = document.getElementById('hamburger');
+  const mob = document.getElementById('mobMenu');
+  hb.addEventListener('click', () => {
+    hb.classList.toggle('open');
+    mob.classList.toggle('open');
+  });
+  window.closeMob = () => { hb.classList.remove('open'); mob.classList.remove('open'); };
+
+  // SCROLL REVEAL
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if(!e.isIntersecting) return;
+      const delay = e.target.dataset.delay || (i * 60);
+      setTimeout(() => e.target.classList.add('visible'), parseInt(delay));
+      obs.unobserve(e.target);
+    });
+  }, {threshold:0.1, rootMargin:'0px 0px -50px 0px'});
+
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    el.dataset.delay = el.dataset.delay || i * 55;
+    obs.observe(el);
+  });
+
+  // COUNTER
+  const countObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(!e.isIntersecting) return;
+      const el = e.target.querySelector('.stat-num');
+      if(!el) return;
+      const target = +el.dataset.target;
+      const dur = 1600;
+      const t0 = performance.now();
+      (function tick(now){
+        const p = Math.min((now-t0)/dur, 1);
+        const ease = 1 - Math.pow(1-p, 3);
+        el.textContent = Math.floor(ease * target);
+        if(p < 1) requestAnimationFrame(tick);
+        else el.textContent = target;
+      })(t0);
+      countObs.unobserve(e.target);
+    });
+  }, {threshold:0.3});
+  document.querySelectorAll('.stat-box').forEach(el => countObs.observe(el));
+
+  // FORM
+  window.handleForm = function(e){
+    e.preventDefault();
+    const s = document.getElementById('formSuccess');
+    s.classList.add('show');
+    e.target.reset();
+    setTimeout(() => s.classList.remove('show'), 6000);
+  };
+
+})();
+</script>
+</body>
+</html>

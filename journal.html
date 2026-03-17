@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Journal — Wanderlust</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Raleway:wght@200;300;400;500;600&family=Cormorant:ital,wght@0,300;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07091A;--bg2:#0D1030;--bg3:#111428;
+  --glass:rgba(255,255,255,0.05);--glass2:rgba(255,255,255,0.08);
+  --border:rgba(255,255,255,0.09);
+  --gold:#F0A500;--gold2:#FFD166;--rose:#FF6B9D;--teal:#06D6A0;
+  --text:#EEF2FF;--muted:rgba(200,210,255,0.5);
+  --serif:'Playfair Display',Georgia,serif;--display:'Cormorant',Georgia,serif;--sans:'Raleway',system-ui,sans-serif;
+  --ease:cubic-bezier(0.16,1,0.3,1);
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--gold)}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;align-items:center;justify-content:space-between;padding:.9rem clamp(1.5rem,5vw,4rem);background:rgba(7,9,26,.9);backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+.nav-brand{font-family:var(--serif);font-size:1.25rem;font-weight:700;letter-spacing:.12em;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav-links{display:flex;align-items:center;gap:2.5rem;list-style:none}
+.nav-links a{font-size:.72rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);transition:color .25s}
+.nav-links a:hover{color:var(--gold)}
+.nav-cta{padding:.55rem 1.4rem;background:linear-gradient(135deg,var(--gold),#E8950A);color:#07091A;font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;border-radius:2px}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
+.hamburger span{display:block;width:22px;height:1.5px;background:var(--text);transition:all .3s}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.mob-menu{position:fixed;inset:0;z-index:800;background:var(--bg2);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2.5rem;opacity:0;visibility:hidden;transition:all .4s var(--ease)}
+.mob-menu.open{opacity:1;visibility:visible}
+.mob-menu a{font-family:var(--serif);font-size:clamp(2rem,6vw,3.5rem);font-weight:400;color:var(--text);transition:color .2s}
+.mob-menu a:hover{color:var(--gold)}
+
+.page-hero{
+  padding:8rem clamp(1.5rem,5vw,4rem) 4rem;
+  background:linear-gradient(160deg,#07091A 0%,#0E1035 50%,#120820 100%);
+  position:relative;overflow:hidden;border-bottom:1px solid var(--border);
+}
+.ph-orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
+.ph-orb1{width:400px;height:400px;background:radial-gradient(circle,rgba(255,107,157,.1),transparent 70%);top:-10%;right:10%}
+.ph-orb2{width:300px;height:300px;background:radial-gradient(circle,rgba(240,165,0,.1),transparent 70%);bottom:-10%;left:20%}
+.breadcrumb{display:flex;align-items:center;gap:.5rem;margin-bottom:1.5rem}
+.breadcrumb a{font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold)}
+.breadcrumb span{font-size:.65rem;color:var(--muted)}
+.page-hero h1{font-family:var(--serif);font-size:clamp(2.5rem,7vw,6rem);font-weight:900;line-height:1;color:var(--text);margin-bottom:1rem}
+.page-hero h1 em{font-style:italic;background:linear-gradient(135deg,var(--rose),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.page-hero p{font-size:.95rem;color:var(--muted);line-height:1.8;max-width:500px;font-weight:300}
+.ph-stats{display:flex;gap:2rem;margin-top:2rem;flex-wrap:wrap}
+.ph-stat{display:flex;flex-direction:column;gap:.25rem}
+.ph-stat strong{font-family:var(--serif);font-size:2rem;font-weight:700;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+.ph-stat span{font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+.ph-divider{width:1px;background:var(--border);height:40px;align-self:center}
+
+/* FILTER */
+.filter-bar{padding:1.5rem clamp(1.5rem,5vw,4rem);background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+.filter-btn{padding:.45rem 1.1rem;border-radius:50px;border:1px solid var(--border);background:none;color:var(--muted);font-family:var(--sans);font-size:.65rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .25s}
+.filter-btn:hover{border-color:rgba(240,165,0,.4);color:var(--gold);background:rgba(240,165,0,.06)}
+.filter-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(240,165,0,.1)}
+
+/* JOURNAL ENTRIES */
+.journal-section{padding:3rem clamp(1.5rem,5vw,4rem) 5rem;background:var(--bg)}
+.journal-entry{
+  display:grid;grid-template-columns:80px 1fr auto;align-items:start;gap:2rem;
+  padding:2.25rem 1.5rem;border-bottom:1px solid var(--border);border-radius:12px;
+  cursor:pointer;transition:background .3s,transform .3s;
+  opacity:0;transform:translateY(20px);
+}
+.journal-entry:first-child{border-top:1px solid var(--border)}
+.journal-entry.visible{opacity:1;transform:translateY(0);transition:background .3s,transform .8s var(--ease),opacity .8s var(--ease)}
+.journal-entry:hover{background:rgba(255,255,255,.025);transform:translateX(6px)!important}
+.je-num{font-family:var(--serif);font-size:2.8rem;font-weight:900;color:rgba(240,165,0,.15);line-height:1;transition:color .3s}
+.journal-entry:hover .je-num{color:rgba(240,165,0,.4)}
+.je-main{}
+.je-meta{display:flex;align-items:center;gap:.75rem;margin-bottom:.6rem}
+.je-date{font-size:.65rem;color:var(--muted);letter-spacing:.06em}
+.je-chip{
+  padding:.22rem .65rem;border-radius:50px;
+  background:rgba(240,165,0,.1);border:1px solid rgba(240,165,0,.2);
+  font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:600;
+}
+.je-main h2{font-family:var(--serif);font-size:clamp(1.1rem,2.2vw,1.5rem);font-weight:700;color:var(--text);line-height:1.3;margin-bottom:.6rem}
+.je-main p{font-size:.83rem;color:var(--muted);line-height:1.75;font-weight:300;max-width:600px}
+.je-emoji{font-size:2rem;padding-top:.25rem}
+.je-arrow{
+  width:44px;height:44px;border-radius:12px;flex-shrink:0;
+  background:var(--glass);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;color:var(--muted);
+  transition:all .25s;align-self:center;
+}
+.journal-entry:hover .je-arrow{background:rgba(240,165,0,.15);border-color:rgba(240,165,0,.3);color:var(--gold)}
+
+/* FEATURED STORY */
+.featured-story{
+  margin-bottom:3rem;padding:2rem;
+  background:linear-gradient(135deg,rgba(240,165,0,.06),rgba(255,107,157,.04));
+  border:1px solid rgba(240,165,0,.15);border-radius:16px;
+  display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center;
+}
+.fs-label{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+.fs-label::before{content:'';width:16px;height:1.5px;background:var(--gold);border-radius:1px}
+.fs-left h2{font-family:var(--serif);font-size:clamp(1.4rem,2.5vw,2rem);font-weight:700;color:var(--text);line-height:1.25;margin-bottom:.75rem}
+.fs-left p{font-size:.85rem;color:var(--muted);line-height:1.75;font-weight:300;margin-bottom:1.25rem}
+.read-btn{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.75rem 1.75rem;background:linear-gradient(135deg,var(--gold),#E8950A);
+  color:#07091A;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  border-radius:6px;border:none;cursor:pointer;transition:transform .25s,box-shadow .25s;
+}
+.read-btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(240,165,0,.35)}
+.fs-right{
+  height:200px;border-radius:12px;overflow:hidden;
+  background:linear-gradient(160deg,#1B0A4A 0%,#3D1177 50%,#6B21A8 100%);
+  display:flex;align-items:center;justify-content:center;font-size:4rem;
+}
+
+footer{background:var(--bg);border-top:1px solid var(--border);padding:3rem clamp(1.5rem,5vw,4rem)}
+.footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.5rem;padding-bottom:2rem;border-bottom:1px solid var(--border);margin-bottom:2rem}
+.footer-logo{font-family:var(--serif);font-size:1.3rem;font-weight:700;letter-spacing:.12em;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.footer-nav{display:flex;gap:2rem;flex-wrap:wrap}
+.footer-nav a{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);transition:color .2s}
+.footer-nav a:hover{color:var(--gold)}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.footer-bottom p{font-size:.7rem;color:rgba(200,210,255,.3)}
+.aws-badge{padding:.3rem .85rem;border:1px solid var(--border);border-radius:50px;font-size:.6rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;display:flex;align-items:center;gap:.4rem}
+.aws-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(.85)}}
+
+@media(max-width:768px){
+  .nav-links{display:none}.hamburger{display:flex}
+  .journal-entry{grid-template-columns:50px 1fr;}.je-arrow{display:none}
+  .featured-story{grid-template-columns:1fr}.fs-right{display:none}
+  .ph-stats{gap:1rem}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-brand">WANDERLUST</a>
+  <ul class="nav-links">
+    <li><a href="destinations.html">Destinations</a></li>
+    <li><a href="journal.html">Journal</a></li>
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+    <li><a href="index.html" class="nav-cta">Back Home</a></li>
+  </ul>
+  <button class="hamburger" id="hb" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="mob-menu" id="mob">
+  <a href="index.html" onclick="document.getElementById('mob').classList.remove('open');document.getElementById('hb').classList.remove('open')">Home</a>
+  <a href="destinations.html" onclick="document.getElementById('mob').classList.remove('open');document.getElementById('hb').classList.remove('open')">Destinations</a>
+  <a href="index.html#contact" onclick="document.getElementById('mob').classList.remove('open');document.getElementById('hb').classList.remove('open')">Contact</a>
+</div>
+
+<div class="page-hero">
+  <div class="ph-orb ph-orb1"></div><div class="ph-orb ph-orb2"></div>
+  <div class="breadcrumb"><a href="index.html">Home</a><span>→</span><span>Journal</span></div>
+  <h1>The <em>Journal</em></h1>
+  <p>Field notes from the road. Unfiltered, unsponsored, and completely unplanned. Real travel, real stories.</p>
+  <div class="ph-stats">
+    <div class="ph-stat"><strong>312</strong><span>Total Entries</span></div>
+    <div class="ph-divider"></div>
+    <div class="ph-stat"><strong>6</strong><span>Continents</span></div>
+    <div class="ph-divider"></div>
+    <div class="ph-stat"><strong>2019</strong><span>Since</span></div>
+  </div>
+</div>
+
+<div class="filter-bar">
+  <button class="filter-btn active" onclick="setFilter(this,'all')">All Stories</button>
+  <button class="filter-btn" onclick="setFilter(this,'asia')">Asia</button>
+  <button class="filter-btn" onclick="setFilter(this,'europe')">Europe</button>
+  <button class="filter-btn" onclick="setFilter(this,'africa')">Africa</button>
+  <button class="filter-btn" onclick="setFilter(this,'americas')">Americas</button>
+  <button class="filter-btn" onclick="setFilter(this,'oceania')">Oceania</button>
+</div>
+
+<section class="journal-section">
+
+  <div class="featured-story">
+    <div class="fs-left">
+      <div class="fs-label">Editor's Pick</div>
+      <h2>48 Hours in Tokyo: A City That Never Sleeps, But Always Surprises</h2>
+      <p>From a 3am ramen counter in Shinjuku to a 6am tuna auction at Toyosu, Tokyo rewards those who stay awake for it. The city shifts personalities hourly.</p>
+      <a href="#" class="read-btn">Read Full Story</a>
+    </div>
+    <div class="fs-right">🍜</div>
+  </div>
+
+  <div class="journal-entry" data-region="africa">
+    <div class="je-num">01</div>
+    <div class="je-main">
+      <div class="je-meta"><span class="je-date">January 2025</span><span class="je-chip">Africa</span></div>
+      <h2>Crossing the Sahara: What Silence Sounds Like When It's Absolute</h2>
+      <p>No wifi, no cities, no noise — just the sound of sand shifting and stars bright enough to read by. The desert teaches you that stillness is not the absence of sound, but the presence of something older than words.</p>
+    </div>
+    <div class="je-arrow"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 9h10M10 5l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+  </div>
+
+  <div class="journal-entry" data-region="europe">
+    <div class="je-num">02</div>
+    <div class="je-main">
+      <div class="je-meta"><span class="je-date">November 2024</span><span class="je-chip">Europe</span></div>
+      <h2>The Quiet Villages of Tuscany Nobody Puts on a Map</h2>
+      <p>Not Florence. Not Siena. The hill towns you reach only by asking a stranger, and are glad you did. Where the wine is unnamed, the pasta is handmade, and the sunset over olive groves needs no caption.</p>
+    </div>
+    <div class="je-arrow"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 9h10M10 5l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+  </div>
+
+  <div class="journal-entry" data-region="americas">
+    <div class="je-num">03</div>
+    <div class="je-main">
+      <div class="je-meta"><span class="je-date">September 2024</span><span class="je-chip">Americas</span></div>
+      <h2>Patagonia Without a Plan: Getting Beautifully Lost at the End of the World</h2>
+      <p>The glaciers are receding, the buses run when they feel like it, and the wind is strong enough to rethink every decision you've ever made. We wouldn't have it any other way. Patagonia has its own schedule.</p>
+    </div>
+    <div class="je-arrow"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 9h10M10 5l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+  </div>
+
+  <div class="journal-entry" data-region="asia">
+    <div class="je-num">04</div>
+    <div class="je-main">
+      <div class="je-meta"><span class="je-date">July 2024</span><span class="je-chip">Asia</span></div>
+      <h2>Monsoon Goa: Why the Off-Season Is the Only Season Worth Visiting</h2>
+      <p>Empty beaches, wild surf, cheap rooms, and the smell of petrichor on warm laterite roads. The tourists leave. The magic arrives. This is the Goa the brochures will never show you.</p>
+    </div>
+    <div class="je-arrow"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 9h10M10 5l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+  </div>
+
+  <div class="journal-entry" data-region="oceania">
+    <div class="je-num">05</div>
+    <div class="je-main">
+      <div class="je-meta"><span class="je-date">April 2024</span><span class="je-chip">Oceania</span></div>
+      <h2>New Zealand's South Island: Roads That Demand to Be Driven Slowly</h2>
+      <p>Every turn on the road to Milford Sound is a reason to pull over. We stopped 22 times in 4 hours. We have no regrets. The South Island genuinely exceeds every photograph you've ever seen of it.</p>
+    </div>
+    <div class="je-arrow"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 9h10M10 5l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+  </div>
+
+  <div class="journal-entry" data-region="africa">
+    <div class="je-num">06</div>
+    <div class="je-main">
+      <div class="je-meta"><span class="je-date">February 2024</span><span class="je-chip">Africa</span></div>
+      <h2>Safari at Golden Hour: Why the Maasai Mara Makes Every Other Landscape Feel Small</h2>
+      <p>The light at 5:30pm is unlike anything else on earth. Lions rest in amber grass, elephants move in slow procession, and everything feels impossibly, achingly beautiful and real.</p>
+    </div>
+    <div class="je-arrow"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 9h10M10 5l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+  </div>
+
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">WANDERLUST</div>
+    <div class="footer-nav">
+      <a href="index.html">Home</a>
+      <a href="destinations.html">Destinations</a>
+      <a href="journal.html">Journal</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Wanderlust Travel Journal. Hosted on AWS S3 + CloudFront.</p>
+    <div class="aws-badge"><span class="aws-dot"></span>AWS Deployed</div>
+  </div>
+</footer>
+
+<script>
+document.getElementById('hb').addEventListener('click',function(){this.classList.toggle('open');document.getElementById('mob').classList.toggle('open')});
+const entries = document.querySelectorAll('.journal-entry');
+const obs = new IntersectionObserver(entries2=>{
+  entries2.forEach(e=>{
+    if(!e.isIntersecting)return;
+    const i=[...entries].indexOf(e.target);
+    setTimeout(()=>e.target.classList.add('visible'),i*100);
+    obs.unobserve(e.target);
+  });
+},{threshold:.1});
+entries.forEach(e=>obs.observe(e));
+window.setFilter=function(btn,region){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  entries.forEach(e=>{const show=region==='all'||e.dataset.region===region;e.style.display=show?'':'none'});
+}
+</script>
+</body>
+</html>
