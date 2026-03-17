@@ -4,7 +4,7 @@ A static travel blog website built and deployed on AWS as part of the Accenture 
 
 ## Live Links
 
-CloudFront URL: dzuf2g6t6l9w4.cloudfront.net 
+CloudFront URL: https://dzuf2g6t6l9w4.cloudfront.net/ 
 S3 Website Endpoint: http://wanderlust-travel-blog.s3-website-us-east-1.amazonaws.com
 
 ## About the project
