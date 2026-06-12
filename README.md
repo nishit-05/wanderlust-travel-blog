@@ -1,11 +1,17 @@
 # Wanderlust Travel Blog
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
+![AWS S3](https://img.shields.io/badge/AWS-S3-569A31?logo=amazons3&logoColor=white)
+![CloudFront](https://img.shields.io/badge/AWS-CloudFront-FF9900?logo=amazonaws&logoColor=white)
+
 A static travel blog website built and deployed on AWS as part of the Accenture LearnVantage x Udacity AWS Cloud Fundamentals course.
 
 ## Live Links
 
-CloudFront URL: https://dzuf2g6t6l9w4.cloudfront.net/ 
-S3 Website Endpoint: http://wanderlust-travel-blog.s3-website-us-east-1.amazonaws.com
+- **CloudFront URL:** https://dzuf2g6t6l9w4.cloudfront.net/
+- **S3 Website Endpoint:** http://wanderlust-travel-blog.s3-website-us-east-1.amazonaws.com
 
 ## About the project
 
@@ -36,6 +42,13 @@ wanderlust-travel-blog/
 └── README.md
 ```
 
+## License
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
 ## Author
 
-Nishit Dongre
+**Nishit Dongre**  
+B.Tech in Electrical and Computer Engineering
+
+[LinkedIn](https://www.linkedin.com/in/nishitdongre/) • [Email](mailto:nishitdongre@gmail.com)
